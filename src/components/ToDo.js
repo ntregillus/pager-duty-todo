@@ -5,7 +5,8 @@ import { editToDo } from '../actions/to-dos';
 class ToDo extends React.Component
 {
     state = {
-        toDo:this.props.toDo
+        toDo:this.props.toDo,
+        className: this.props.toDo.isDone ? 'done': 'to-do'   
     }
     markComplete = (e) => {
         const updates = {
@@ -13,18 +14,23 @@ class ToDo extends React.Component
             isDone: e.target.checked
         };
         this.props.updateToDo(updates);
+        
+        this.setState(()=> ({
+            toDo: updates,
+            className: updates.isDone ? 'done': 'to-do'
+        }));
     }
 
     render() 
     {
         return (
-            <div>
+            <div className={this.state.className}>
                 <input 
                     type="checkbox" 
                     checked={this.state.toDo.isDone} 
                     onChange={this.markComplete}            
                 />
-                {this.props.toDo.text} 
+                <span>{this.props.toDo.text}</span>
             </div>
         );
     }

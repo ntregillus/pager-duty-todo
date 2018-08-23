@@ -21,19 +21,22 @@ class EditToDo extends React.Component{
         e.preventDefault();
         let error = ''
         if(this.state.text.trim() === ''){
-            this.setState(() => {
-                error: 'Text is required for a todo!';
-            });
+            this.setState(() => ({
+                error: 'Text is required for a todo!'
+            }));
             return;
         }
-        this.setState(() => {
-            error: '';
-        });
+       
         console.log('text: ', this.state.text, ' isDone: ', this.state.isDone);
         this.props.onSave({
             isDone: this.state.isDone,
             text: this.state.text
         });
+        this.setState(() => ({
+            error: '',
+            text: '',
+            isDone: false
+        }));
     }
     render() {
         return (

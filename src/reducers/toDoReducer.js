@@ -6,7 +6,8 @@ const toDoReducer = (state=defaultToDos, action) => {
         case types.ADD_TODO: 
             return [...state, action.toDo];
         case types.REMOVE_TODO:
-            return state.filter((i)=> i!== action.id);
+            //overwitting id removal if they decide to not marked isDone
+            return state.filter((i)=> i.id!== action.id || !i.isDone);
         case types.EDIT_TODO:
             return state.map((item) => {
                 let result = item;
