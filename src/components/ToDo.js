@@ -5,7 +5,7 @@ class ToDo extends React.Component
 {
 
     markComplete = (e) => {
-        alert('marking ' + this.props.toDo.text + ' done? ' + e.target.checked);
+        
     }
 
     render() 

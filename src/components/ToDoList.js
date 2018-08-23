@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
 import ToDo from './ToDo';
 
-const TodoList = (props) => (
+export const TodoList = (props) => (
     <div id="list">
     {
         props.toDos &&
@@ -11,5 +13,9 @@ const TodoList = (props) => (
     }
     </div>
 );
-
-export default TodoList;
+const mapStateToProps = (state) => {
+    return {
+        toDos: state.toDos
+    };
+}
+export default connect(mapStateToProps)(TodoList);
