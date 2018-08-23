@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import ToDo from './ToDo';
-
+import CreateToDo from './CreateToDo';
 export const TodoList = (props) => (
     <div id="list">
     {

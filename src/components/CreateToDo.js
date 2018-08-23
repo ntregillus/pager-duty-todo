@@ -1,40 +1,23 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
+import EditToDo from './EditToDo';
+import {createToDo} from '../actions/to-dos';
 class CreateToDo extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            toDo: props.toDo||{
-                isDone: false,
-                text: ''
-            }
-        };
+    createToDo = (toDo) => {
+        this.props.createToDo(toDo);
+        this.props.history.push('/');
     }
-    onIsDoneChange = (e) => {
-        this.state.toDo.isDone = e.target.checked;
-    }
-    onTextChange = (e) => {
-        this.state.toDo.text = e.target.value;
-    }
-    saveChanges = () =>
-    {
-        console.log(this.state.toDo);
-    }
-    render() {
+    render () {
         return (
-            <form onSubmit={this.saveChanges}>
-                <input type="checkbox" 
-                    value={this.state.toDo.isDone}
-                    onChange={this.onIsDoneChange}
-                />
-                <input type="text" maxLength="50" 
-                    value={this.state.toDo.text}
-                    onChange={this.onTextChange}
-                />
-                <button>Save</button>
-            </form>
-        );
+            <EditToDo onSave={this.createToDo} />  
+          );
     }
 } 
-
-export default CreateToDo;
+const mapDispatchToProps = (dispatch) => ({
+        createToDo: (payload) => {
+            dispatch(createToDo(payload));
+            
+        } 
+});
+export default connect(undefined, mapDispatchToProps)(CreateToDo);

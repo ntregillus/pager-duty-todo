@@ -1,11 +1,18 @@
 import React from 'react';
-
+import {connect} from 'react-redux';
+import { editToDo } from '../actions/to-dos';
 
 class ToDo extends React.Component
 {
-
+    state = {
+        toDo:this.props.toDo
+    }
     markComplete = (e) => {
-        
+        const updates = {
+            ...this.state.toDo,
+            isDone: e.target.checked
+        };
+        this.props.updateToDo(updates);
     }
 
     render() 
@@ -14,7 +21,7 @@ class ToDo extends React.Component
             <div>
                 <input 
                     type="checkbox" 
-                    value={this.props.toDo.isDone} 
+                    checked={this.state.toDo.isDone} 
                     onChange={this.markComplete}            
                 />
                 {this.props.toDo.text} 
@@ -22,4 +29,12 @@ class ToDo extends React.Component
         );
     }
 }
-export default ToDo;
+
+const mapDispatchToProps = (dispatch) => ({
+    updateToDo: (toDo) => {
+        dispatch(editToDo(toDo));
+
+    }
+})
+
+export default connect(undefined, mapDispatchToProps)(ToDo);

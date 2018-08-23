@@ -5,15 +5,19 @@ export const ADD_TODO = 'ADD_TODO';
 export const EDIT_TODO = 'EDIT_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 
-export const createAction = (todo = {}) => {
+export const createToDo = (todo = {}) => {
     const todoToAdd = {
         isDone: false,
         text: '',
         dueDate: moment(),
+        createdDate: moment(),
+        completedDate: null,
         id: uuid(),
         ... todo
     };
-
+    if(todoToAdd.isDone){
+        todoToAdd.completedDate = moment();
+    }
 
     return {
         type: ADD_TODO,
@@ -21,10 +25,14 @@ export const createAction = (todo = {}) => {
     };
 }
 
-export const editToDo = (todo)=>{
+export const editToDo = (toDo)=>{
+    if(toDo.isDone && !toDo.completedDate){
+        toDo.completedDate = moment();
+    }
+
     return {
         type: EDIT_TODO,
-        todo: todo
+        toDo: toDo
     };
 }
 

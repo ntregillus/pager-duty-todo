@@ -4,33 +4,53 @@ class EditToDo extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            toDo: props.toDo||{
-                isDone: false,
-                text: ''
-            }
+            isDone: false,
+            text: ''
         };
     }
     onIsDoneChange = (e) => {
-        this.state.toDo.isDone = e.target.checked;
+        const isDone = e.target.checked
+        this.setState(()=> ({isDone}));
     }
     onTextChange = (e) => {
-        this.state.toDo.text = e.target.value;
+        const text = e.target.value
+        this.setState(()=> ({text}));
     }
-    saveChanges = () =>
+    saveChanges = (e) =>
     {
-        console.log(this.state.toDo);
+        e.preventDefault();
+        let error = ''
+        if(this.state.text.trim() === ''){
+            this.setState(() => {
+                error: 'Text is required for a todo!';
+            });
+            return;
+        }
+        this.setState(() => {
+            error: '';
+        });
+        console.log('text: ', this.state.text, ' isDone: ', this.state.isDone);
+        this.props.onSave({
+            isDone: this.state.isDone,
+            text: this.state.text
+        });
     }
     render() {
         return (
             <form onSubmit={this.saveChanges}>
+                {
+                    this.state.error &&
+                    <p>{this.state.error}</p>
+                }
                 <input type="checkbox" 
-                    value={this.state.toDo.isDone}
+                    checked={this.state.isDone}
                     onChange={this.onIsDoneChange}
                 />
                 <input type="text" maxLength="50" 
-                    value={this.state.toDo.text}
+                    value={this.state.text}
                     onChange={this.onTextChange}
                 />
+                
                 <button>Save</button>
             </form>
         );
