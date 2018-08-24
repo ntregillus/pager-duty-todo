@@ -5,6 +5,18 @@ export const ADD_TODO = 'ADD_TODO';
 export const EDIT_TODO = 'EDIT_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 
+const handleIsDoneTrue = (dispatch, toDo) => {
+    if(toDo.isDone){
+        toDo.completedDate = moment();
+        setTimeout(() => {
+            //taking a few seconds to remove, this will allow ui to show as strike through,
+            // also allow user to edit state inbetween if they do not actually want ot complete
+            console.log('attempting to remove id ', toDo.id);
+            dispatch(removeToDo(toDo.id));
+        }, 3000);
+    }
+};
+
 export const createToDo = (todo = {}) => {
     return (dispatch) => {
         const todoToAdd = {
@@ -15,34 +27,30 @@ export const createToDo = (todo = {}) => {
             completedDate: null,
             id: uuid(),
             ... todo
-        };
-        if(todoToAdd.isDone){
-            todoToAdd.completedDate = moment();
-            setTimeout(() => {
-                //taking a few seconds to remove, this will allow ui to show as strike through,
-                // also allow user to edit state inbetween if they do not actually want ot complete
-                console.log('attempting to remove id ', todoToAdd.id);
-                dispatch(removeToDo(todoToAdd.id));
-            }, 3000)
-        }
-
+        };        
         dispatch({
             type: ADD_TODO,
             toDo: todoToAdd
         });
+        handleIsDoneTrue(dispatch, todoToAdd);
     };   
-}
+};
 
 export const editToDo = (toDo)=>{
-    if(toDo.isDone && !toDo.completedDate){
-        toDo.completedDate = moment();
-    }
+    return (dispatch) => {
+        if(toDo.isDone && !toDo.completedDate){
+            toDo.completedDate = moment();
+        }
 
-    return {
-        type: EDIT_TODO,
-        toDo: toDo
+        dispatch({
+            type: EDIT_TODO,
+            toDo: toDo
+        });
+        handleIsDoneTrue(dispatch, toDo);
+
     };
-}
+
+};
 
 export const removeToDo = (id) => {
     return {

@@ -39,7 +39,6 @@ class ToDo extends React.Component
 const mapDispatchToProps = (dispatch) => ({
     updateToDo: (toDo) => {
         dispatch(editToDo(toDo));
-
     }
 })
 

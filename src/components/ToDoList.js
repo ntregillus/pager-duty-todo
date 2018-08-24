@@ -10,8 +10,8 @@ export const TodoList = (props) => (
         {
             props.toDos &&
             props.toDos.map((item, index)=> 
-                <ToDo key={index} toDo={item} />
-            ) 
+                (<ToDo key={item.id} toDo={item} />)
+            )
         }
         </div>
         <EditToDo onSave={(toDo) => {
