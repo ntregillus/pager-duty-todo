@@ -5,6 +5,17 @@ export const ADD_TODO = 'ADD_TODO';
 export const EDIT_TODO = 'EDIT_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 
+const persistToDos = (todoList) => {
+    localStorage.setItem('todos', JSON.stringify(todoList));
+};
+const getStoredToDos = () => {
+    const str = localStorage.getItem('todos');
+    if(str){
+        return JSON.parse(str);
+    }else{
+        return [];
+    }
+};
 export const createToDo = (todo = {}) => {
     const todoToAdd = {
         isDone: false,
@@ -19,11 +30,12 @@ export const createToDo = (todo = {}) => {
         todoToAdd.completedDate = moment();
     }
 
+    
     return {
         type: ADD_TODO,
         toDo: todoToAdd
     };
-}
+};
 
 export const editToDo = (toDo)=>{
     if(toDo.isDone && !toDo.completedDate){
