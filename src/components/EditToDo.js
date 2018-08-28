@@ -31,7 +31,8 @@ class EditToDo extends React.Component{
         console.log('text: ', this.state.text, ' isDone: ', this.state.isDone);
         this.props.onSave({
             isDone: this.state.isDone,
-            text: this.state.text
+            text: this.state.text,
+            priority: this.state.priority||0
         });
         this.setState(() => ({
             error: '',
@@ -39,6 +40,13 @@ class EditToDo extends React.Component{
             isDone: false
         }));
     }
+    setPriority = (e) => {
+        const priority = e.target.value
+        this.setState(()=> ({
+            priority
+        }));
+    }
+
     render() {
         return (
             <form onSubmit={this.saveChanges}>
@@ -52,11 +60,14 @@ class EditToDo extends React.Component{
                     onChange={this.onIsDoneChange}
                 />
                 }
+                <input type="number" value={this.state.priority}
+                    onChange={this.setPriority} 
+                    placeholder="priority"/>
                 <input type="text" maxLength="50" 
+                    placeholder="text of to do"
                     value={this.state.text}
                     onChange={this.onTextChange}
                 />
-                
                 <button>Save</button>
             </form>
         );

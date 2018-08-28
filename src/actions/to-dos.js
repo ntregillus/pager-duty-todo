@@ -11,7 +11,12 @@ const persistToDos = (todoList) => {
 export const getStoredToDos = () => {
     const str = localStorage.getItem('todos');
     if(str){
-        return JSON.parse(str);
+        return JSON.parse(str).map((item) => {
+            return {
+                priority: 0,
+                ...item
+            };
+        });
     }else{
         return [];
     }
@@ -37,6 +42,7 @@ export const createToDo = (todo = {}) => {
             dueDate: moment(),
             createdDate: moment(),
             completedDate: null,
+            priority: 0,
             id: uuid(),
             ... todo
         };  

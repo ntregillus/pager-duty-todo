@@ -31,6 +31,7 @@ class ToDo extends React.Component
                     onChange={this.markComplete}            
                 />
                 <span>{this.props.toDo.text}</span>
+                <span>({this.props.toDo.priority})</span>
             </div>
         );
     }
