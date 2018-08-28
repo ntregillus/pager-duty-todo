@@ -8,7 +8,7 @@ export const REMOVE_TODO = 'REMOVE_TODO';
 const persistToDos = (todoList) => {
     localStorage.setItem('todos', JSON.stringify(todoList));
 };
-const getStoredToDos = () => {
+export const getStoredToDos = () => {
     const str = localStorage.getItem('todos');
     if(str){
         return JSON.parse(str);
@@ -16,39 +16,74 @@ const getStoredToDos = () => {
         return [];
     }
 };
-export const createToDo = (todo = {}) => {
-    const todoToAdd = {
-        isDone: false,
-        text: '',
-        dueDate: moment(),
-        createdDate: moment(),
-        completedDate: null,
-        id: uuid(),
-        ... todo
-    };
-    if(todoToAdd.isDone){
-        todoToAdd.completedDate = moment();
-    }
 
-    
-    return {
-        type: ADD_TODO,
-        toDo: todoToAdd
-    };
+const handleIsDoneTrue = (dispatch, toDo) => {
+    if(toDo.isDone){
+        toDo.completedDate = moment();
+        setTimeout(() => {
+            //taking a few seconds to remove, this will allow ui to show as strike through,
+            // also allow user to edit state inbetween if they do not actually want ot complete
+            console.log('attempting to remove id ', toDo.id);
+            dispatch(removeToDo(toDo.id));
+        }, 3000);
+    }
+};
+
+export const createToDo = (todo = {}) => {
+    return (dispatch) => {
+        const todoToAdd = {
+            isDone: false,
+            text: '',
+            dueDate: moment(),
+            createdDate: moment(),
+            completedDate: null,
+            id: uuid(),
+            ... todo
+        };  
+        const existing = getStoredToDos();
+        persistToDos([...existing, todoToAdd]);
+        
+        dispatch({
+            type: ADD_TODO,
+            toDo: todoToAdd
+        });
+        handleIsDoneTrue(dispatch, todoToAdd);
+    };   
 };
 
 export const editToDo = (toDo)=>{
-    if(toDo.isDone && !toDo.completedDate){
-        toDo.completedDate = moment();
-    }
+    return (dispatch) => {
+        if(toDo.isDone && !toDo.completedDate){
+            toDo.completedDate = moment();
+        }
+        const updated = getStoredToDos().map((item) => {
+            if(item.id === toDo.id){
+                return {
+                    ... item,
+                    ... toDo
+                };
+            }
+            return item;
+        });
 
-    return {
-        type: EDIT_TODO,
-        toDo: toDo
+        persistToDos(updated);
+
+        dispatch({
+            type: EDIT_TODO,
+            toDo: toDo
+        });
+        handleIsDoneTrue(dispatch, toDo);
+
     };
-}
 
-export const removeTodo = (id) => {
+};
+
+export const removeToDo = (id) => {
+
+    const persistList = getStoredToDos().filter((item) =>{
+        return item.id !== id;
+    });
+    persistToDos(persistList);
     return {
         type: REMOVE_TODO,
         id: id

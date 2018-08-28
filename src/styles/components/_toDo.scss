@@ -1,0 +1,16 @@
+
+
+
+
+
+.to-do {
+    font-weight: bold;
+}
+
+.done {
+    text-decoration: line-through;
+    opacity: 0;
+    transition: opacity ease-in-out 3s;
+    transition-delay: 1s;
+}
+

@@ -1,0 +1,15 @@
+.header {
+    margin-bottom: $sm-size;
+    padding: $md-size 0;
+}
+
+.headder__subtitle {
+    font-size: $md-size;
+    font-weight: 500;
+}
+
+@media (min-width: $desktop-breakpoint) {
+    .header {
+        margin-bottom: $lg-size;
+    }
+}

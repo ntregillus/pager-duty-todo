@@ -10,7 +10,7 @@ class CreateToDo extends React.Component{
     }
     render () {
         return (
-            <EditToDo onSave={this.createToDo} />  
+            <EditToDo showComplete={true} onSave={this.createToDo} />  
           );
     }
 } 

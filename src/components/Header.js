@@ -2,11 +2,13 @@ import React from 'react';
 
 
 const Header = () => (
-    <div>
-        <h1>Pager Duty: ToDos!</h1>
-        <p>
-            Your go to place so you can procrastinate more efficently!
-        </p>
+    <div className="container">
+        <div className="header">
+            <h1 className="header__title">Pager Duty: ToDos!</h1>
+            <p className="header__subtitle">
+                Helping you remember what your honey-do list!
+            </p>
+        </div>
     </div>
 );
 
