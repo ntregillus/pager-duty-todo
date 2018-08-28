@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 const PriorityReport = (props) => {
     return (
-        <table>
+        <table className="container">
             <thead>
                 <tr>
                     <th>Priority</th>
@@ -30,7 +30,6 @@ const setStateInProps = (state) => {
     
     let rows = state.toDos.reduce((result, item)=> {
         //mapping to array with index == priority
-        console.log(item.priority);
         while(result.length < item.priority+1){
             result.push(0); //defaulting index to 0
         }
