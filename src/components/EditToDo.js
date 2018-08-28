@@ -6,6 +6,7 @@ class EditToDo extends React.Component{
         this.state = {
             isDone: false,
             text: '',
+            priority: '',
             showComplete: props.showComplete||false
         };
     }
@@ -27,7 +28,12 @@ class EditToDo extends React.Component{
             }));
             return;
         }
-       
+       if(this.state.priority < 0){
+           this.setState(() => ({
+               error: 'Priority cannot be less than zero'
+           }));
+           return;
+       }
         console.log('text: ', this.state.text, ' isDone: ', this.state.isDone);
         this.props.onSave({
             isDone: this.state.isDone,
@@ -37,6 +43,7 @@ class EditToDo extends React.Component{
         this.setState(() => ({
             error: '',
             text: '',
+            priority: '',
             isDone: false
         }));
     }
